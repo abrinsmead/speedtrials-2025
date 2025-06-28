@@ -1,0 +1,2 @@
+# ETL Package Requirements
+# No external dependencies - uses Python standard library only

@@ -1,79 +1,165 @@
-# 🏁 Codegen Speed Trials - Challenge Repo 
+# Georgia Safe Drinking Water Monitoring System
 
-**🚰 What's in our public drinking water? Turn Georgia's cryptic water quality data into something the public, operators, and regulators can actually use.**
+A comprehensive web application for monitoring and tracking drinking water quality compliance across Georgia's public water systems, built with Next.js 15 and powered by EPA's Safe Drinking Water Information System (SDWIS) data.
 
-American's [top environmental concern](https://news.gallup.com/poll/643850/seven-key-gallup-findings-environment-earth-day.aspx) is pollution in their drinking water. The EPA publishes [national drinking water data](https://www.epa.gov/ground-water-and-drinking-water/safe-drinking-water-information-system-sdwis-federal-reporting), but it's difficult to interpret, especially for the public or under-resourced rural water systems.
+## 🚰 Overview
 
-To give you a feel for existing solutions, here's the state of Georgia's official drinker water viewer:
+This application provides real-time insights into Georgia's drinking water infrastructure, helping regulators, water system operators, and the public track:
 
-<img width="900" alt="Screenshot 2025-06-27 at 8 30 45 PM" src="https://github.com/user-attachments/assets/d8f7c9e9-a146-4a8f-b6c7-fed8d634ca2c" />
+- **Water System Compliance** - Monitor violations and enforcement actions
+- **System Performance** - Track inspection results and water quality metrics
+- **Geographic Distribution** - Visualize water systems and violations across Georgia
+- **Lead & Copper Testing** - Review LCR (Lead and Copper Rule) sample results
+- **Regulatory Milestones** - Track important dates and compliance deadlines
 
+## 🏗️ Architecture
 
-**✨ The good news:** the Georgia Environmental Protection Division knows the public deserves better! Three weeks ago, they published a [Request for Information](https://drive.google.com/file/d/13VkRTJhGJcF9FmgrXs-j4PZzI3jepFvq/view?usp=sharing) to overhaul the whole thing.
+![Architecture at Halfway Point](gallery/architecture-at-halfway-point.png)
 
-**✅ Your task:** Set the water data free. Build a product that ingests real-world raw water quality data and empowers the public and water systems operators to interpret and act on it.
+The application follows a modern, scalable architecture:
 
-## 🗂️ What We're Giving You
+- **Frontend**: Next.js 15 with App Router for server-side rendering and optimal performance
+- **UI Components**: shadcn/ui component library built on Radix UI primitives
+- **Database**: SQLite for reliable, serverless data storage
+- **ORM**: Drizzle ORM for type-safe database queries
+- **Styling**: Tailwind CSS for responsive, utility-first design
 
-In the [data](data/) directory, you'll find a raw export of the public Georgia water system data from SDWIS along with a README packed with helpful context and links. Feel free to augment! 
+## 📊 Database Design
 
-The Georgia RFP wants solutions for three primary stakeholders:
+![Entity Relationship Diagram](gallery/erd.png)
 
-1. **The Public:** Make it easier for Georgia residents to understand the safety of their drinking water. You could help them better understand what violations mean, the health implications of different contaminants, or take action to stay up-to-date on their local water system. 
-2. **The Operators:** Help water system operators view information on their system, track notices from regulators, and take action on compliance tasks. 
-3. **The Regulators:** A field kit allowing them to quickly understand the live status of a water system on-the-go on site visits or in meetings. They'll need to drill down into specifics, but high level summaries are helpful too! 
+The database schema captures comprehensive water system data:
 
-## Getting Started
+![High Level ERD](gallery/high-level-erd.png)
 
-1. **Fork**
-   - Fork this repository, you'll include a link to your fork in your submission.
-3. **Explore:**
-   - Look through the [data directory](data/) to understand structure and patterns.
-   - Ingest the raw data into a clean, queryable database.
-   - Feel free to augment with any additional data you need (e.g. geographic data for mapping)
-4. **Create:**
-   - Take [Georgia's current offering](https://gadrinkingwater.net/DWWPUB/) out of the 2000s.
-   - You can build for the Public, the Operators, the Regulators (or all three!).
-1. **Submit:** Instructions below.
+Key entities include:
+- Public Water Systems (PWS) with population served and system types
+- Violations and enforcement actions with health-based categorization
+- Site visits and inspection records
+- Lead and Copper Rule (LCR) sampling results
+- Geographic service areas and facility locations
 
-## Implementation Requirements
+## 🔄 Data Pipeline
 
-- **Don't sweat hosting:** You can build the whole thing locally and share a live link via [ngrok tunnel](https://ngrok.com/our-product/secure-tunnels) (or similar) to your localhost:
+![ETL Process](gallery/etl-process.png)
 
-   ```shell
-   brew install ngrok
-   # If you don't have one, sign up for a free ngrok account at https://ngrok.com
-   ngrok config add-authtoken <your-ngrok-auth-token>
-   ngrok http http://localhost:<your-local-server-port>
-   ```
-- **BYO stack:** As long as you follow the submission instructions, you can take any approach you want — any libraries, any DB, any interface. We will be rewarding bold swings!  
+Data flows from EPA's SDWIS through an ETL process that:
+1. Extracts regulatory data from state and federal sources
+2. Transforms and validates data for consistency
+3. Loads into the SQLite database for fast querying
 
+## 🚀 Getting Started
 
-## ⚖️ Judging
+### Prerequisites
 
-Unlike traditional hackathons, the Codegen Speed Trials aren't just about what you build, they're about how you build it. We'll reward participants who take the challenge the furthest, but we're equally excited to celebrate innovative collaborations with AI.
+- Node.js 18+ 
+- npm or yarn package manager
 
-​Projects will be scored across four categories:
+### Installation
 
-1. **Core Delivery:** Does your submission preserve and accurately represent the data provided?
-2. **Impact and Relevance:** Does your submission improve on [Georgia's exising solution](https://gadrinkingwater.net/DWWPUB/) for the public, water system operators, regulators (or multiple)?
-3. **Ambition and Scope:** Did you take a big, creative swing at the problem? How far beyond the baseline did you dare to go?
-4. **Iron Man Score:** Did you make creative use of AI tools and agents to get the challenge done?
+1. Clone the repository
+```bash
+git clone https://github.com/yourusername/speedtrials-2025.git
+cd speedtrials-2025
+```
 
-We have $1000s in cash and credit prizes to award for winning submissions, and are excited to see what you build!
+2. Install dependencies
+```bash
+cd packages/web
+npm install
+```
 
-## 📤 Submission Instructions
+3. Run the development server
+```bash
+npm run dev
+```
 
-**Submissions are due by 5 PM. [Use this link to submit.](https://cerebralvalley.ai/e/codegen-speedtrials-2025/hackathon/submit)**
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-Include the following with your submission:
+## 🛠️ Development
 
-1. A public link to your forked Github repo
-2. 3. A link to a short (< 2 min) video explaining your submission and the tools + approaches you used to build it. We want to hear details on how you accelerated your work using AI!
-3. A link via [ngrok tunnel](https://ngrok.com/our-product/secure-tunnels) (or similar) to your localhost:
+### Available Scripts
 
-   **Important:** your tunnel will need to remain accessible throughout the entire judging period, which runs from 5-7P PT.
+```bash
+npm run dev         # Start development server
+npm run build       # Build for production
+npm run start       # Start production server
+npm run lint        # Run ESLint
+npm run typecheck   # Run TypeScript compiler
+npm run format      # Format code with Prettier
+npm run db:studio   # Open Drizzle Studio for database management
+```
+
+### Project Structure
+
+```
+speedtrials-2025/
+├── packages/
+│   └── web/                    # Next.js web application
+│       ├── src/
+│       │   ├── app/           # App Router pages and API routes
+│       │   ├── components/    # React components
+│       │   ├── db/           # Database connection and queries
+│       │   └── lib/          # Utilities and helpers
+│       ├── public/           # Static assets
+│       └── package.json      # Dependencies and scripts
+├── gallery/                   # Documentation images
+├── CLAUDE.md                 # AI assistant instructions
+├── WEB_SPEC.md              # Detailed specifications
+└── SDWA_Data_Model.md       # Database schema documentation
+```
+
+## 📱 Features
+
+### Dashboard
+- Real-time statistics on active water systems
+- Compliance rate calculations
+- Recent violations with severity indicators
+- Largest systems by population served
+
+### Water Systems Management
+- Search and filter 1,500+ water systems
+- Detailed system profiles with compliance history
+- Export capabilities for reporting
+
+### Violation Tracking
+- Categorized by health-based vs monitoring violations
+- Status tracking (addressed/unaddressed)
+- Historical violation trends
+
+### Geographic Visualization
+- Interactive map of water system locations
+- Service area boundaries
+- Violation hotspot identification
+
+## 🔒 Security & Compliance
+
+- Read-only database access for data integrity
+- Secure API endpoints with proper validation
+- Compliance with Safe Drinking Water Act regulations
+- No storage of sensitive personal information
+
+## 📖 Documentation
+
+- [Web Application Specifications](WEB_SPEC.md)
+- [Database Schema](SDWA_Data_Model.md)
+- [Development Guidelines](CLAUDE.md)
+- [ETL Process Documentation](PROCESS.md)
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read our contributing guidelines and submit pull requests to the `main` branch.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- EPA's Safe Drinking Water Information System (SDWIS) for providing the data
+- Georgia Environmental Protection Division for state-level data
+- The open source community for the amazing tools and libraries
 
 ---
 
-Good luck!
+Built with ❤️ for clean, safe drinking water in Georgia
