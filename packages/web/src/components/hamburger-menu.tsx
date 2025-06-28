@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Menu, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,9 +20,11 @@ export function HamburgerMenu() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuItem className="cursor-pointer">
-          <User className="mr-2 h-4 w-4" />
-          Sign In
+        <DropdownMenuItem asChild className="cursor-pointer">
+          <Link href="/sign-in">
+            <User className="mr-2 h-4 w-4" />
+            Sign In
+          </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

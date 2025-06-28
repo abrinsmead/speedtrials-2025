@@ -1,5 +1,5 @@
 import { db } from './index';
-import { eq, and, like, desc, sql, isNotNull } from 'drizzle-orm';
+import { eq, and, like, desc, sql } from 'drizzle-orm';
 import {
   pubWaterSystems,
   violationsEnforcement,
@@ -232,50 +232,42 @@ export async function getViolationById(
   violationId: string,
   quarter: string = '2025Q1'
 ) {
-  const result = await db
-    .select({
-      violationId: violationsEnforcement.violationId,
-      pwsid: violationsEnforcement.pwsid,
-      pwsName: pubWaterSystems.pwsName,
-      primacyAgencyCode: pubWaterSystems.primacyAgencyCode,
-      violationCode: violationsEnforcement.violationCode,
-      violationTypeCode: violationsEnforcement.violationTypeCode,
-      violationCategoryCode: violationsEnforcement.violationCategoryCode,
-      contaminantCode: violationsEnforcement.contaminantCode,
-      isHealthBasedInd: violationsEnforcement.isHealthBasedInd,
-      complBeginDate: violationsEnforcement.complPerBeginDate,
-      complEndDate: violationsEnforcement.complPerEndDate,
-      nonComplBeginDate: violationsEnforcement.nonComplPerBeginDate,
-      federalMcl: violationsEnforcement.federalMcl,
-      stateMcl: violationsEnforcement.stateMcl,
-      isMajorViolInd: violationsEnforcement.isMajorViolInd,
-      severityIndCnt: violationsEnforcement.severityIndCnt,
-      publicNotificationTier: violationsEnforcement.publicNotificationTier,
-      violationStatus: violationsEnforcement.violationStatus,
-      ruleCode: violationsEnforcement.ruleCode,
-      ruleGroupCode: violationsEnforcement.ruleGroupCode,
-      ruleFamilyCode: violationsEnforcement.ruleFamilyCode,
-      violFirstReportedDate: violationsEnforcement.violFirstReportedDate,
-      violLastReportedDate: violationsEnforcement.violLastReportedDate,
-    })
-    .from(violationsEnforcement)
-    .leftJoin(
-      pubWaterSystems,
-      and(
-        eq(violationsEnforcement.pwsid, pubWaterSystems.pwsid),
-        eq(violationsEnforcement.submissionYearQuarter, pubWaterSystems.submissionYearQuarter)
-      )
-    )
-    .where(
-      and(
-        eq(violationsEnforcement.pwsid, pwsid),
-        eq(violationsEnforcement.violationId, violationId),
-        eq(violationsEnforcement.submissionYearQuarter, quarter)
-      )
-    )
-    .limit(1);
+  const result = await db.all(sql`
+    SELECT 
+      v.VIOLATION_ID as violationId,
+      v.PWSID as pwsid,
+      p.PWS_NAME as pwsName,
+      p.PRIMACY_AGENCY_CODE as primacyAgencyCode,
+      v.VIOLATION_CODE as violationCode,
+      v.VIOLATION_CODE as violationTypeCode,
+      v.VIOLATION_CATEGORY_CODE as violationCategoryCode,
+      v.CONTAMINANT_CODE as contaminantCode,
+      v.IS_HEALTH_BASED_IND as isHealthBasedInd,
+      v.COMPL_PER_BEGIN_DATE as complBeginDate,
+      v.COMPL_PER_END_DATE as complEndDate,
+      v.NON_COMPL_PER_BEGIN_DATE as nonComplBeginDate,
+      v.FEDERAL_MCL as federalMcl,
+      CAST(v.STATE_MCL AS TEXT) as stateMcl,
+      v.IS_MAJOR_VIOL_IND as isMajorViolInd,
+      CAST(v.SEVERITY_IND_CNT AS TEXT) as severityIndCnt,
+      CAST(v.PUBLIC_NOTIFICATION_TIER AS TEXT) as publicNotificationTier,
+      v.VIOLATION_STATUS as violationStatus,
+      v.RULE_CODE as ruleCode,
+      v.RULE_GROUP_CODE as ruleGroupCode,
+      v.RULE_FAMILY_CODE as ruleFamilyCode,
+      v.VIOL_FIRST_REPORTED_DATE as violFirstReportedDate,
+      v.VIOL_LAST_REPORTED_DATE as violLastReportedDate
+    FROM SDWA_VIOLATIONS_ENFORCEMENT v
+    LEFT JOIN SDWA_PUB_WATER_SYSTEMS p 
+      ON v.PWSID = p.PWSID 
+      AND v.SUBMISSIONYEARQUARTER = p.SUBMISSIONYEARQUARTER
+    WHERE v.PWSID = ${pwsid}
+      AND v.VIOLATION_ID = ${violationId}
+      AND v.SUBMISSIONYEARQUARTER = ${quarter}
+    LIMIT 1
+  `);
 
-  return result[0];
+  return result[0] || null;
 }
 
 // Get enforcement actions for a specific violation
@@ -284,23 +276,21 @@ export async function getEnforcementsByViolation(
   violationId: string,
   quarter: string = '2025Q1'
 ) {
-  return await db
-    .select({
-      enforcementId: violationsEnforcement.enforcementId,
-      enforcementDate: violationsEnforcement.enforcementDate,
-      enforcementActionTypeCode: violationsEnforcement.enforcementActionTypeCode,
-      enfActionCategory: violationsEnforcement.enfActionCategory,
-      enfOriginatorCode: violationsEnforcement.enfOriginatorCode,
-    })
-    .from(violationsEnforcement)
-    .where(
-      and(
-        eq(violationsEnforcement.pwsid, pwsid),
-        eq(violationsEnforcement.violationId, violationId),
-        eq(violationsEnforcement.submissionYearQuarter, quarter),
-        isNotNull(violationsEnforcement.enforcementId)
-      )
-    );
+  const result = await db.all(sql`
+    SELECT 
+      ENFORCEMENT_ID as enforcementId,
+      ENFORCEMENT_DATE as enforcementDate,
+      ENFORCEMENT_ACTION_TYPE_CODE as enforcementActionTypeCode,
+      ENF_ACTION_CATEGORY as enfActionCategory,
+      ENF_ORIGINATOR_CODE as enfOriginatorCode
+    FROM SDWA_VIOLATIONS_ENFORCEMENT
+    WHERE PWSID = ${pwsid}
+      AND VIOLATION_ID = ${violationId}
+      AND SUBMISSIONYEARQUARTER = ${quarter}
+      AND ENFORCEMENT_ID IS NOT NULL
+  `);
+
+  return result;
 }
 
 // Get all site visits

@@ -28,18 +28,19 @@ import {
   getGeographicAreasByPwsid,
 } from '@/db/queries';
 
-export default async function WaterSystemDetail({ params }: { params: { id: string } }) {
-  const system = await getWaterSystemById(params.id);
+export default async function WaterSystemDetail({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const system = await getWaterSystemById(id);
 
   if (!system) {
     notFound();
   }
 
   const [facilities, violations, lcrSamples, geographicAreas] = await Promise.all([
-    getFacilitiesByPwsid(params.id),
-    getViolationsByPwsid(params.id),
-    getLcrSamplesByPwsid(params.id),
-    getGeographicAreasByPwsid(params.id),
+    getFacilitiesByPwsid(id),
+    getViolationsByPwsid(id),
+    getLcrSamplesByPwsid(id),
+    getGeographicAreasByPwsid(id),
   ]);
 
   const activeViolations = violations.filter((v) => v.violationStatus === 'Unaddressed');
