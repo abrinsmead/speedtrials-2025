@@ -40,7 +40,7 @@ export default function SignInPage() {
 
       // For now, show a placeholder message
       setError('WorkOS AuthKit integration pending. This is a demo page.');
-    } catch (err) {
+    } catch {
       setError('Failed to sign in. Please check your credentials.');
     } finally {
       setIsLoading(false);
@@ -58,7 +58,7 @@ export default function SignInPage() {
 
       // For now, show a placeholder message
       setError(`${provider} SSO integration pending. This is a demo page.`);
-    } catch (err) {
+    } catch {
       setError(`Failed to sign in with ${provider}.`);
     } finally {
       setIsLoading(false);
@@ -218,41 +218,6 @@ export default function SignInPage() {
           </Link>
         </p>
       </div>
-
-      {/* WorkOS AuthKit Integration Notes */}
-      <Card className="mt-8 border border-orange-200 bg-orange-50">
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            <AlertCircle className="h-5 w-5 text-orange-600" />
-            WorkOS AuthKit Integration
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3 text-sm">
-          <p>This is a stub implementation. To complete the WorkOS AuthKit integration:</p>
-          <ol className="list-decimal list-inside space-y-2 ml-4">
-            <li>
-              Install WorkOS SDK:{' '}
-              <code className="bg-white px-1 py-0.5 rounded">npm install @workos-inc/node</code>
-            </li>
-            <li>Set up environment variables for WorkOS API keys</li>
-            <li>Configure AuthKit in your WorkOS dashboard</li>
-            <li>Implement the authentication endpoints</li>
-            <li>Add session management and protected routes</li>
-          </ol>
-          <p>
-            See the{' '}
-            <a
-              href="https://workos.com/docs/authkit"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
-            >
-              WorkOS AuthKit documentation
-            </a>{' '}
-            for detailed implementation steps.
-          </p>
-        </CardContent>
-      </Card>
     </div>
   );
 }

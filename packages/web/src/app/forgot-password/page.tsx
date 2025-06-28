@@ -29,7 +29,7 @@ export default function ForgotPasswordPage() {
 
       // For demo, show success
       setIsSuccess(true);
-    } catch (err) {
+    } catch {
       setError('Failed to send reset email. Please try again.');
     } finally {
       setIsLoading(false);

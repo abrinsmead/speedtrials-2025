@@ -48,7 +48,7 @@ export default function SignUpPage() {
 
       // For now, show a placeholder message
       setError('WorkOS AuthKit integration pending. This is a demo page.');
-    } catch (err) {
+    } catch {
       setError('Failed to create account. Please try again.');
     } finally {
       setIsLoading(false);

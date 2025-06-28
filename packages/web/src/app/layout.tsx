@@ -5,7 +5,6 @@ import { Banner } from '@/components/banner';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CopilotProvider } from '@/components/copilot-provider';
-import { CopilotSidebar } from '@/components/copilot-sidebar';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

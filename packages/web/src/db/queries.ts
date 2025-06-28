@@ -339,3 +339,12 @@ export async function getGeographicAreasByPwsid(pwsid: string, quarter: string =
       and(eq(geographicAreas.pwsid, pwsid), eq(geographicAreas.submissionYearQuarter, quarter))
     );
 }
+
+// Get all water systems (for API endpoint)
+export async function getAllWaterSystems(quarter: string = '2025Q1') {
+  return await db
+    .select()
+    .from(pubWaterSystems)
+    .where(eq(pubWaterSystems.submissionYearQuarter, quarter))
+    .orderBy(pubWaterSystems.pwsName);
+}

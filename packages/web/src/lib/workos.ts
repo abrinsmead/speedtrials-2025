@@ -49,19 +49,19 @@ export interface Session {
 // Placeholder functions - implement with actual WorkOS SDK
 
 export async function signIn(
-  email: string,
-  password: string
+  _email: string,
+  _password: string
 ): Promise<{ user: User; session: Session }> {
   // TODO: Implement with WorkOS AuthKit
   throw new Error('WorkOS AuthKit sign-in not implemented');
 }
 
-export async function signInWithSSO(provider: AuthProvider): Promise<{ url: string }> {
+export async function signInWithSSO(_provider: AuthProvider): Promise<{ url: string }> {
   // TODO: Implement with WorkOS SSO
   throw new Error('WorkOS SSO sign-in not implemented');
 }
 
-export async function signUp(email: string, password: string): Promise<{ user: User }> {
+export async function signUp(_email: string, _password: string): Promise<{ user: User }> {
   // TODO: Implement with WorkOS AuthKit
   throw new Error('WorkOS AuthKit sign-up not implemented');
 }
@@ -76,17 +76,17 @@ export async function getSession(): Promise<Session | null> {
   return null;
 }
 
-export async function verifyEmail(token: string): Promise<void> {
+export async function verifyEmail(_token: string): Promise<void> {
   // TODO: Implement with WorkOS AuthKit
   throw new Error('WorkOS AuthKit email verification not implemented');
 }
 
-export async function resetPassword(email: string): Promise<void> {
+export async function resetPassword(_email: string): Promise<void> {
   // TODO: Implement with WorkOS AuthKit
   throw new Error('WorkOS AuthKit password reset not implemented');
 }
 
-export async function updatePassword(token: string, newPassword: string): Promise<void> {
+export async function updatePassword(_token: string, _newPassword: string): Promise<void> {
   // TODO: Implement with WorkOS AuthKit
   throw new Error('WorkOS AuthKit password update not implemented');
 }
